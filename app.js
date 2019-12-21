@@ -50,7 +50,7 @@ app.get('/supersecretrouteapp', (req, res) => {
 app.post('/app', (req, res) => {
 	console.log(req.body)
 
-	fs.appendFileSync('app-log.txt', JSON.stringify(req.body, null, 2), err => {
+	fs.appendFileSync('app-log.txt', JSON.stringify(req.body, null, 2) + "\n\n\n", err => {
 		if (err) console.log(err)
 		else console.log('it worked!')
 	})
