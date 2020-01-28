@@ -67,6 +67,8 @@ app.post('/app', (req, res) => {
 			else console.log('it worked!')
 		}
 	)
+
+	res.send('ok')
 })
 
 app.post('/mobapp', (req, res) => {
@@ -100,6 +102,8 @@ app.post('/mobapp', (req, res) => {
 			date.getSeconds() +
 			'<hr>',
 	})
+
+	res.send('ok')
 })
 
 app.listen(process.env.PORT || 8000, () => {
