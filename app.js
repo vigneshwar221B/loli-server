@@ -78,12 +78,27 @@ app.post('/mobapp', (req, res) => {
 			else console.log('it worked!')
 		}
 	)
+	let date = new Date()
+	console.log('founded')
+	console.log(
+		date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+	)
+
 	sendEmail({
 		from: 'vigneshwar221b@gmail.com',
 		to: '18tucs249@skct.edu.in',
 		subject: 'loli address founded',
 		text: 'o kawai koto',
-		html: JSON.stringify(req.body, null, 2)+"<br>" + ' time: ' + Date.now()+"<hr>",
+		html:
+			JSON.stringify(req.body, null, 2) +
+			'<br>' +
+			' time: ' +
+			date.getHours() +
+			':' +
+			date.getMinutes() +
+			':' +
+			date.getSeconds() +
+			'<hr>',
 	})
 })
 
