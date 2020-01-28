@@ -56,6 +56,16 @@ app.post('/app', (req, res) => {
 	})
 })
 
+
+app.post('/mobapp', (req, res) => {
+	console.log(req.body)
+
+	fs.appendFileSync('mob-app.txt', JSON.stringify(req.body, null, 2) + "\n\n\n", err => {
+		if (err) console.log(err)
+		else console.log('it worked!')
+	})
+})
+
 app.listen(process.env.PORT || 8000, () => {
 	console.log('server started at 8000')
 })
