@@ -47,6 +47,11 @@ app.get('/supersecretrouteapp', (req, res) => {
 	res.send(data)
 })
 
+app.get('/mobapp', (req, res) => {
+	let data = fs.readFileSync('mob-app.txt').toString()
+	res.send(data)
+})
+
 app.post('/app', (req, res) => {
 	console.log(req.body)
 
